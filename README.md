@@ -22,7 +22,7 @@
 
 如何虚拟GPS坐标等这边不说了，代码不多很好找
 
-由于签名原因，你们编译后可能无法正常使用高德地图SDK，请自行申请高德地图KEY并配置
+    由于签名不同的原因，编译后可能无法正常使用高德地图SDK，请自行申请高德地图KEY并配置
 
 [下载成品APK](https://github.com/L-JINBIN/RunningSimulator/raw/master/app/app-release.apk)
 
