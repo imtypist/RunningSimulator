@@ -21,3 +21,11 @@
 模拟定位时依次选取相邻两个坐标点，先算出直线距路，再生成随机速度，t=s/v得到所需时间，得到这些参数后就可以在时间s内每隔200毫秒更新下当前坐标（具体在LocationUtil.navigationLine方法）
 
 如何虚拟GPS坐标等这边不说了，代码不多很好找
+
+## 截图
+
+![image](https://github.com/L-JINBIN/RunningSimulator/raw/master/screenshot/Screenshot_1.png)
+
+![image](https://github.com/L-JINBIN/RunningSimulator/raw/master/screenshot/Screenshot_2.png)
+
+![image](https://github.com/L-JINBIN/RunningSimulator/raw/master/screenshot/Screenshot_3.png)
