@@ -64,7 +64,7 @@ class LocationUtil {
     }
 
     static List<NaviLatLng> getAllNaviLatLng() {
-        speedExtra = 6.4f;
+        speedExtra = 5.4f;
         lastChangeSpeedExtraTime = System.currentTimeMillis();
         List<NaviLatLng> list = new ArrayList<>();
         for (AMapNaviStep aMapNaviStep : mAMapNavi.getNaviPath().getSteps()) {
@@ -90,8 +90,8 @@ class LocationUtil {
         float distance = AMapUtils.calculateLineDistance(newLatLng(n1), newLatLng(n2));
         if (distance == 0)
             return;
-        if (System.currentTimeMillis() - lastChangeSpeedExtraTime > 60000) {
-            // 每分钟减小一次speedExtra
+        if (System.currentTimeMillis() - lastChangeSpeedExtraTime > 30000) {
+            // 每半分钟减小一次speedExtra
             // 到后面平均速度就会越来越慢
             lastChangeSpeedExtraTime = System.currentTimeMillis();
             speedExtra *= 0.94f;
@@ -103,11 +103,13 @@ class LocationUtil {
         if (callback != null)
             callback.onSpeedChange(speed);
         float timeLen = distance / speed * 1000;
+        // System.out.println("timeLen: "+ timeLen);
 
         // 距离过短
-        if (timeLen + 10 <= NAVI_SLEEP_TIME) {
-            SystemClock.sleep((long) timeLen);
+        if (timeLen <= NAVI_SLEEP_TIME) {
+            // SystemClock.sleep((long) timeLen);
             setGPSData(n2.getLatitude(), n2.getLongitude(), speed);
+            SystemClock.sleep(NAVI_SLEEP_TIME);
             return;
         }
 
@@ -116,13 +118,18 @@ class LocationUtil {
         double lngStart = n1.getLongitude();
         double latDif = n2.getLatitude() - latStart;
         double lngDif = n2.getLongitude() - lngStart;
+        boolean isArrive = false;
         while (true) {
             if (callback != null && callback.isCancel())
                 return;
             float pass = System.currentTimeMillis() - time;
-            if (pass > timeLen)
+            if (pass > timeLen && isArrive)
                 break;
             float frc = pass / timeLen;
+            if(frc > 1){
+                frc = 1;
+                isArrive = true;
+            }
             setGPSData(latStart + latDif * frc, lngStart + lngDif * frc, speed);
             SystemClock.sleep(NAVI_SLEEP_TIME);
         }
